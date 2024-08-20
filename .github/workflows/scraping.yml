@@ -12,7 +12,9 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@
+      with:
+          token: ${{ secrets.Token_GitHub }}
 
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -34,26 +36,15 @@ jobs:
     # - name: Run Python script
     #   run: python nogizaka.py
 
-    - name: Change directory
+    - name: Change directory and push
       run: |
         source .env
         pwd
         cd ${REPO_NAME}
         pwd
-
-    - name: Copy .nojekyll
-      run: |
-        pwd
         cp ../.nojekyll .
-
-    - name: Commit changes
-      run: |
         git config --local user.name "GitHub Action"
         git config --local user.email "action@github.com"
-        git add .
+        git add -A
         git commit -m "Automated commit by GitHub Action"
-
-    - name: Push changes
-      run: git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git push
