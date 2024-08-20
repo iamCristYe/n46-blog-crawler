@@ -17,6 +17,8 @@ def add_host(str: str) -> str:
 def download_image_return_path(img_src_url: str, repo_name: str) -> str:
     if img_src_url.startswith("blob"):
         return img_src_url
+    if img_src_url.startswith("cid"):
+        return img_src_url
     img_full_url = add_host(img_src_url)
     img_relative_path = f"{repo_name}/{urllib.parse.urlparse(img_full_url).path[1:]}"
     if os.path.exists(img_relative_path):
@@ -209,6 +211,11 @@ def get_blog_content(url: str, repo_name: str):
 
 
 def main(member_id: int):
+    import sys
+
+    sys.setrecursionlimit(4646)
+    # fix https://www.nogizaka46.com/s/n46/diary/detail/56176
+
     result = {}
     profile = get_profile(member_id)
     for key in profile:
