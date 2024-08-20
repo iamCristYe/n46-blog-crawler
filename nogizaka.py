@@ -15,6 +15,8 @@ def add_host(str: str) -> str:
 
 
 def download_image_return_path(img_src_url: str, repo_name: str) -> str:
+    if img_src_url.startswith("blob"):
+        return img_src_url
     img_full_url = add_host(img_src_url)
     img_relative_path = f"{repo_name}/{urllib.parse.urlparse(img_full_url).path[1:]}"
     if os.path.exists(img_relative_path):
@@ -154,7 +156,7 @@ def main(member_id: int):
         print(f"downloading {i+1}/{len(articles_url_list)}: {articles_url_list[i]}")
         article = get_blog_content(articles_url_list[i], result["repo_name"])
         result["blog"].append(article)
-        time.sleep(random.randint(1, 3))
+        # time.sleep(random.randint(1, 3))
     with open(f"{result['repo_name']}/result.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
