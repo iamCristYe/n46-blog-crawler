@@ -201,10 +201,21 @@ def get_blog_content(url: str, repo_name: str):
             content = soup.find_all("div", class_="bd--edit")[0]
             img_list = content.find_all("img")
             for img in img_list:
-                # print(img)
-                # # https://www.nogizaka46.com/s/n46/diary/detail/100646 empty img no src
+                # Check if the img has a src attribute
                 if img.get("src"):
-                    img["src"] = download_image_return_path(img.get("src"), repo_name)
+                    # Check if the parent is an <a> tag
+                    parent = img.find_parent("a")
+                    # fix for staff blogs. example: https://www.nogizaka46.com/s/n46/diary/detail/22046
+                    if parent and parent.get("href"):
+                        # Replace img src with href of the parent <a>
+                        img["src"] = download_image_return_path(
+                            parent.get("href"), repo_name
+                        )
+                    else:
+                        # If no parent <a> or no href, process the img normally
+                        img["src"] = download_image_return_path(
+                            img.get("src"), repo_name
+                        )
 
             data["content"] = str(content)
 
@@ -220,6 +231,11 @@ def main(member_id: int):
 
     sys.setrecursionlimit(4646)
     # fix https://www.nogizaka46.com/s/n46/diary/detail/56176
+
+    get_blog_content(
+        "https://www.nogizaka46.com/s/n46/diary/detail/22046?ima=0755&cd=MEMBER",
+        "test-blog",
+    )
 
     result = {}
     profile = get_profile(member_id)
