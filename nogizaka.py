@@ -151,8 +151,11 @@ def main(member_id: int):
         result["blog"].append(article)
         # time.sleep(random.randint(1, 3))
     with open(f"{result['repo_name']}/result.json", "w", encoding="utf-8") as f:
-        json.dump(result, f, ensure_ascii=False)
+        json.dump(result, f, ensure_ascii=False, indent=2)
 
 
-# main(36754)
-main(48009)
+from dotenv import load_dotenv
+
+load_dotenv()
+member_id = os.getenv("MEMBER_ID")
+main(member_id)
