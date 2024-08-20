@@ -37,6 +37,71 @@ def download_image_return_path(img_src_url: str, repo_name: str) -> str:
 
 
 def get_profile(member_id: int):
+    if str(member_id).startswith("40003"):
+        return {
+            "member_name_kanji": "運営スタッフ",
+            "member_name_kana": "",
+            "member_name_romaji": "staff",
+            "repo_name": "staff-blog-archive",
+            "SNS": {},
+            "生年月日": "",
+            "血液型": "",
+            "星座": "",
+            "身長": "",
+            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
+        }
+    if str(member_id).startswith("40004"):
+        return {
+            "member_name_kanji": "3期生",
+            "member_name_kana": "",
+            "member_name_romaji": "sankisei",
+            "repo_name": "sankisei-blog-archive",
+            "SNS": {},
+            "生年月日": "",
+            "血液型": "",
+            "星座": "",
+            "身長": "",
+            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
+        }
+    if str(member_id).startswith("40005"):
+        return {
+            "member_name_kanji": "4期生",
+            "member_name_kana": "",
+            "member_name_romaji": "yonkisei",
+            "repo_name": "yonkisei-blog-archive",
+            "SNS": {},
+            "生年月日": "",
+            "血液型": "",
+            "星座": "",
+            "身長": "",
+            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
+        }
+    if str(member_id).startswith("40001"):
+        return {
+            "member_name_kanji": "新4期生",
+            "member_name_kana": "",
+            "member_name_romaji": "shinyonkisei",
+            "repo_name": "shinyonkisei-blog-archive",
+            "SNS": {},
+            "生年月日": "",
+            "血液型": "",
+            "星座": "",
+            "身長": "",
+            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
+        }
+    if str(member_id).startswith("40007"):
+        return {
+            "member_name_kanji": "5期生",
+            "member_name_kana": "",
+            "member_name_romaji": "gokisei",
+            "repo_name": "gokisei-blog-archive",
+            "SNS": {},
+            "生年月日": "",
+            "血液型": "",
+            "星座": "",
+            "身長": "",
+            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
+        }
     result = {}
     profile_url = f"https://www.nogizaka46.com/s/n46/artist/{member_id}?ima=0826"
     soup = BeautifulSoup(requests.get(profile_url).content, "lxml")
@@ -62,7 +127,7 @@ def get_profile(member_id: int):
         else:
             for a in dl.find_all("dd")[0].children:
                 result["SNS"][a.get_text()] = a.get("href")
-
+    print(result)
     result["profile_pic"] = download_image_return_path(
         soup.find_all("div", class_="md--hd__fig a--img js-pos m--fig")[0]
         .find_all("div")[0]
