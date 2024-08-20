@@ -24,9 +24,11 @@ jobs:
     - name: Clone and clean repository
       run: |
         source .env
-        git clone https://github.com/SakamichiSeries/${REPO_NAME}.git
+        git clone "https://${Token_GitHub}@github.com/SakamichiSeries/${REPO_NAME}.git"
         shopt -s extglob
         rm -rf ${REPO_NAME}/!(.git)
+      env:
+          Token_GitHub: ${{ secrets.Token_GitHub }}
 
     - name: Install dependencies
       run: |
