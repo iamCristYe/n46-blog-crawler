@@ -19,11 +19,6 @@ jobs:
       with:
         python-version: '3.8' # Specify the Python version you need
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
     - name: Load environment variables from .env
       run: |
         echo "Loading environment variables from .env"
@@ -31,17 +26,25 @@ jobs:
         source .env
         set +o allexport
 
-    - name: Run Python script
-      run: python nogizaka.py
+    - name: clone repo
+      run: |
+        git clone https://github.com/SakamichiSeries/${{ env.REPO_NAME }}.git
+        shopt -s extglob
+        rm -rf ${{ env.REPO_NAME }}/!(.git)
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # - name: Run Python script
+    #   run: python nogizaka.py
 
     - name: Change directory
       run: cd ${{ env.REPO_NAME }}
 
     - name: Copy .nojekyll
       run: cp ../.nojekyll .
-
-    - name: Add Git remote
-      run: git remote add origin https://github.com/SakamichiSeries/${{ env.REPO_NAME }}.git
 
     - name: Commit changes
       run: |

@@ -26,8 +26,10 @@ def download_image_return_path(img_src_url: str, repo_name: str) -> str:
             response = requests.get(img_full_url)
             with open(img_relative_path, "wb") as f:
                 f.write(response.content)
+            print(f"File saved: {img_relative_path}")
             return "/" + img_relative_path
-        except:
+        except Exception:
+            print(Exception)
             pass
 
 
@@ -132,7 +134,8 @@ def get_blog_content(url: str, repo_name: str):
             data["content"] = str(content)
 
             return data
-        except:
+        except Exception:
+            print(Exception)
             pass
 
 
