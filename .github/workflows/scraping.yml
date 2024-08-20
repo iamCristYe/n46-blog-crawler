@@ -1,9 +1,9 @@
 name: Run Python Script and Push Changes
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
