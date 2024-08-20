@@ -28,8 +28,9 @@ def download_image_return_path(img_src_url: str, repo_name: str) -> str:
                 f.write(response.content)
             print(f"File saved: {img_relative_path}")
             return "/" + img_relative_path
-        except Exception:
-            print(Exception)
+        except Exception as e:
+            print(e)
+            time.sleep(random.randint(30, 60))
             pass
 
 
@@ -134,8 +135,9 @@ def get_blog_content(url: str, repo_name: str):
             data["content"] = str(content)
 
             return data
-        except Exception:
-            print(Exception)
+        except Exception as e:
+            print(e)
+            time.sleep(random.randint(30, 60))
             pass
 
 
