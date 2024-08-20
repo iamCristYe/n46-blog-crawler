@@ -152,7 +152,7 @@ def main(member_id: int):
         print(f"downloading {i+1}/{len(articles_url_list)}: {articles_url_list[i]}")
         article = get_blog_content(articles_url_list[i], result["repo_name"])
         result["blog"].append(article)
-        # time.sleep(random.randint(1, 3))
+        time.sleep(random.randint(1, 3))
     with open(f"{result['repo_name']}/result.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
