@@ -37,10 +37,14 @@ jobs:
     - name: Change directory
       run: |
         source .env
+        pwd
         cd ${REPO_NAME}
+        pwd
 
     - name: Copy .nojekyll
-      run: cp ../.nojekyll .
+      run: |
+        pwd
+        cp ../.nojekyll .
 
     - name: Commit changes
       run: |
