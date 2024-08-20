@@ -25,14 +25,19 @@ def download_image_return_path(img_src_url: str, repo_name: str) -> str:
         print(f"File exists: {img_relative_path}")
         return "/" + img_relative_path
     os.makedirs(os.path.dirname(img_relative_path), exist_ok=True)
+    fail_count = 0
     while True:
         try:
+            if fail_count > 3:
+                return "/" + img_relative_path
+
             response = requests.get(img_full_url)
             with open(img_relative_path, "wb") as f:
                 f.write(response.content)
             print(f"File saved: {img_relative_path}")
             return "/" + img_relative_path
         except Exception as e:
+            fail_count += 1
             print(e)
             time.sleep(random.randint(30, 60))
             pass
