@@ -232,11 +232,6 @@ def main(member_id: int):
     sys.setrecursionlimit(4646)
     # fix https://www.nogizaka46.com/s/n46/diary/detail/56176
 
-    get_blog_content(
-        "https://www.nogizaka46.com/s/n46/diary/detail/22046?ima=0755&cd=MEMBER",
-        "test-blog",
-    )
-
     result = {}
     profile = get_profile(member_id)
     for key in profile:
