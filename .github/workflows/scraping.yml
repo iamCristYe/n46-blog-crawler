@@ -1,4 +1,4 @@
-name: Run Python Script and Push Changes
+name: scraper
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Python script
-      run: python nogizaka.py
+      run: python sakurazaka46.py
 
     - name: Change directory and push
       run: |
