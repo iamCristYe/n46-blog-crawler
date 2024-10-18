@@ -116,10 +116,11 @@ def get_profile(member_id: str):
     result["SNS"] = {}
     temp_td__text_list = soup.find_all("td", class_="c-member__info-td__text")
     if len(temp_td__text_list) > 5:
-        for a in temp_td__text_list[5].children:
+        for a in temp_td__text_list[5].find_all("a"):
             if "instagram" in a.get("href"):
                 result["SNS"]["Instagram"] = a.get("href")
-            raise Exception
+            else:
+                raise Exception
 
     print(result)
     result["profile_pic"] = download_image_return_path(
