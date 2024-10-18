@@ -11,10 +11,11 @@ import urllib.parse
 
 
 def add_host(str: str) -> str:
-    return urllib.parse.urljoin("https://www.nogizaka46.com/", str)
+    return urllib.parse.urljoin("https://www.hinatazaka46.com/", str)
 
 
 def download_image_return_path(img_src_url: str, repo_name: str) -> str:
+    # return ""
     if img_src_url.startswith("blob"):
         return img_src_url
     if img_src_url.startswith("cid"):
@@ -44,108 +45,30 @@ def download_image_return_path(img_src_url: str, repo_name: str) -> str:
 
 
 def get_profile(member_id: int):
-    if str(member_id).startswith("40003"):
-        return {
-            "member_name_kanji": "運営スタッフ",
-            "member_name_kana": "",
-            "member_name_romaji": "staff",
-            "repo_name": "staff-blog-archive",
-            "SNS": {},
-            "生年月日": "",
-            "血液型": "",
-            "星座": "",
-            "身長": "",
-            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
-        }
-    if str(member_id).startswith("40004"):
-        return {
-            "member_name_kanji": "3期生",
-            "member_name_kana": "",
-            "member_name_romaji": "sankisei",
-            "repo_name": "sankisei-blog-archive",
-            "SNS": {},
-            "生年月日": "",
-            "血液型": "",
-            "星座": "",
-            "身長": "",
-            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
-        }
-    if str(member_id).startswith("40005"):
-        return {
-            "member_name_kanji": "4期生",
-            "member_name_kana": "",
-            "member_name_romaji": "yonkisei",
-            "repo_name": "yonkisei-blog-archive",
-            "SNS": {},
-            "生年月日": "",
-            "血液型": "",
-            "星座": "",
-            "身長": "",
-            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
-        }
-    if str(member_id).startswith("40001"):
-        return {
-            "member_name_kanji": "新4期生",
-            "member_name_kana": "",
-            "member_name_romaji": "shinyonkisei",
-            "repo_name": "shinyonkisei-blog-archive",
-            "SNS": {},
-            "生年月日": "",
-            "血液型": "",
-            "星座": "",
-            "身長": "",
-            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
-        }
-    if str(member_id).startswith("40007"):
-        return {
-            "member_name_kanji": "5期生",
-            "member_name_kana": "",
-            "member_name_romaji": "gokisei",
-            "repo_name": "gokisei-blog-archive",
-            "SNS": {},
-            "生年月日": "",
-            "血液型": "",
-            "星座": "",
-            "身長": "",
-            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/9/92/Nogizaka46_logo.png",
-        }
     result = {}
-    profile_url = f"https://www.nogizaka46.com/s/n46/artist/{member_id}"
+    profile_url = f"https://www.hinatazaka46.com/s/official/artist/{member_id}"
     soup = BeautifulSoup(requests.get(profile_url).content, "lxml")
-    result["member_name_kanji"] = soup.find_all(
-        "h1", class_="md--hd__ttl f--head a--tx js-tdi js-membername"
-    )[0].get_text()
-    result["member_name_kana"] = soup.find_all(
-        "p", class_="md--hd__j f--head a--tx js-tdi"
-    )[0].get_text()
-    # result["member_name_romaji"] = soup.find_all(
-    #     "p", class_="md--hd__e f--head a--tx js-tdi"
-    # )[0].get_text()
-    with open("members.json") as members_json:
-        members = json.load(members_json)
-        for member in members["N"]:
-            if member[0] == result["member_name_kanji"]:
-                result["member_name_romaji"] = member[1]
-                break
-
+    result["member_name_kanji"] = soup.find_all("p", class_="name")[0].get_text()
+    result["member_name_kana"] = soup.find_all("p", class_="kana")[0].get_text()
+    result["member_name_romaji"] = soup.find_all("p", class_="eigo wf-a")[0].get_text()
     result["repo_name"] = (
-        result["member_name_romaji"].lower().replace(" ", "-") + "-blog-archive"
+        result["member_name_romaji"].replace(" ", "-") + "-blog-archive"
     )
 
-    dl_list = soup.find_all("dl", class_="md--hd__data a--tx js-tdi")
-    for dl in dl_list:
-        key = dl.find_all("dt")[0].get_text()
-        result["SNS"] = {}
-        if key != "SNS":
-            result[key] = dl.find_all("dd")[0].get_text()
-        else:
-            for a in dl.find_all("dd")[0].children:
-                result["SNS"][a.get_text()] = a.get("href")
+    dltb = soup.find_all("dl", class_="dltb")[0]
+    for i in range(5):  # 生年月日 星座 身長 出身地 血液型
+        key = dltb.find_all("dt")[i].get_text()
+        result[key] = dltb.find_all("dd")[i].get_text()
+
+    result["SNS"] = {}
+    if soup.find_all("dd", class_="prof-elem-sns dltb"):
+        for a in soup.find_all("dd", class_="prof-elem-sns dltb")[0].children:
+            # a.parent.get("class") insta
+            result["SNS"][a.parent.get("class")] = a.get("href")
+
     print(result)
     result["profile_pic"] = download_image_return_path(
-        soup.find_all("div", class_="md--hd__fig a--img js-pos m--fig")[0]
-        .find_all("div")[0]
-        .get("data-src"),
+        soup.find_all("p", class_="ph")[0].find_all("img")[0].get("src"),
         result["repo_name"],
     )
 
@@ -155,15 +78,13 @@ def get_profile(member_id: int):
 
 def get_articles_url_list(member_id: int):
     current_page = 1
-    current_url = (
-        f"https://www.nogizaka46.com/s/n46/diary/MEMBER/list?page=0&ct={member_id}"
-    )
+    current_url = f"https://sakurazaka46.com/s/s46/diary/blog/list?ct={member_id}"
     articles_url_list = []
 
     while True:
         soup = BeautifulSoup(requests.get(current_url).content, "lxml")
         # print(soup.prettify())
-        a_list = soup.find_all("a", class_="bl--card js-pos a--op hv--thumb")
+        a_list = soup.find_all("ul", class_="com-blog-part box3 fxpc")[0].find_all("a")
         for a in a_list:
             url_with_param = add_host(a.get("href"))
             # Parse the URL
@@ -173,12 +94,11 @@ def get_articles_url_list(member_id: int):
                 (parsed_url.scheme, parsed_url.netloc, parsed_url.path, "", "", "")
             )
             articles_url_list.append(url_without_params)
-        print(f"{len(a_list)} results on page {current_page}.")
+        print(f"{len(a_list)} results on page {current_page}. ({current_url})")
 
-        next_li = soup.find_all("li", class_="next")
-        if next_li:
-            for a in next_li[0]:
-                current_url = add_host(a.get("href"))
+        next_li_div = soup.find_all("div", class_="com-pager")
+        if "→" in next_li_div[-1].get_text():
+            current_url = f"https://sakurazaka46.com/s/s46/diary/blog/list?ct={member_id}&page={current_page}"
             current_page += 1
             # print(articles_url_list)
             # print(current_url)
@@ -197,17 +117,23 @@ def get_blog_content(url: str, repo_name: str):
         try:
             data = {}
             soup = BeautifulSoup(requests.get(url).content, "lxml")
-            data["title"] = soup.find_all(
-                "h1", class_="bd--hd__ttl f--head a--tx js-tdi"
-            )[0].get_text()
 
-            data["time"] = soup.find_all("p", class_="bd--hd__date a--tx js-tdi")[
-                0
-            ].get_text()
+            # https://sakurazaka46.com/s/s46/diary/detail/57724
+            data["title"] = (
+                soup.find_all("div", class_="inner title-wrap")[0].get_text()
+                if soup.find_all("div", class_="inner title-wrap")
+                else ""
+            )
+
+            data["time"] = (
+                soup.find_all("article")[0]
+                .find_all("p", class_="date wf-a")[-1]
+                .get_text()
+            )
 
             data["url"] = url
 
-            content = soup.find_all("div", class_="bd--edit")[0]
+            content = soup.find_all("div", class_="box-article")[0]
             img_list = content.find_all("img")
             for img in img_list:
                 # Check if the img has a src attribute
@@ -254,6 +180,7 @@ def main(member_id: int):
         article = get_blog_content(articles_url_list[i], result["repo_name"])
         result["blog"].append(article)
         # time.sleep(random.randint(1, 3))
+    os.makedirs(result["repo_name"], exist_ok=True)
     with open(f"{result['repo_name']}/result.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
