@@ -297,27 +297,30 @@ def update_repo(member_id: int):
     with open(f"{result['repo_name']}/result.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
 
-    subprocess.run(["pwd"])
-    os.chdir(repo_name)
-    subprocess.run(["pwd"])
-    subprocess.run(["cp", "../.nojekyll", "."])
+    subprocess.run(["cp", "../.nojekyll", "."], cwd=repo_name)
     subprocess.run(
-        ["git", "config", "--local", "user.name", "GitHub Action"], check=True
+        ["git", "config", "--local", "user.name", "GitHub Action"],
+        check=True,
+        cwd=repo_name,
     )
     subprocess.run(
-        ["git", "config", "--local", "user.email", "action@github.com"], check=True
+        ["git", "config", "--local", "user.email", "action@github.com"],
+        check=True,
+        cwd=repo_name,
     )
 
     # Add all changes
-    subprocess.run(["git", "add", "-A"], check=True)
+    subprocess.run(["git", "add", "-A"], check=True, cwd=repo_name)
 
     # Commit the changes
     subprocess.run(
-        ["git", "commit", "-m", "Automated commit by GitHub Action"], check=True
+        ["git", "commit", "-m", "Automated commit by GitHub Action"],
+        check=True,
+        cwd=repo_name,
     )
 
     # Push the changes
-    subprocess.run(["git", "push"], check=True)
+    subprocess.run(["git", "push"], check=True, cwd=repo_name)
 
 
 member_code = [
