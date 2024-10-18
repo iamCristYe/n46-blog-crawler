@@ -27,7 +27,16 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run Python script
-      run: python Hinatazaka46.py
+      run: python Nogizaka46.py
+      env:
+        TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+    
+    - name: Run Python script
+      run: python Keyakizaka46.py
       env:
         TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
        
+    - name: Run Python script
+      run: python Hinatazaka46.py
+      env:
+        TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
