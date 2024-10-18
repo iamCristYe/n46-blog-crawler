@@ -252,7 +252,7 @@ def update_repo(member_id: int):
     subprocess.run(["rm", "-rf", repo_name])
 
     # Replace with your GitHub token and organization name
-    token = os.getenv("Token_GitHub")
+    token = os.getenv("TOKEN_GITHUB")
     organization_name = "SakamichiSeries"
 
     g = Github(token)

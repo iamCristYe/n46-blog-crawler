@@ -28,3 +28,6 @@ jobs:
 
     - name: Run Python script
       run: python nogizaka.py
+      env:
+        TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
+       
