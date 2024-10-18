@@ -5,6 +5,8 @@ import random
 import json
 import os
 import urllib.parse
+from github import Github
+import subprocess
 
 # pip install lxml
 # https://www.crummy.com/software/BeautifulSoup/bs4/doc/#the-keyword-arguments:~:text=External%20Python%20dependency-,If%20you%20can%2C%20I%20recommend%20you%20install%20and%20use%20lxml%20for%20speed.,-Note%20that%20if
@@ -248,9 +250,6 @@ def update_repo(member_id: int):
     repo_name = result["repo_name"]
     # Fix profile_pic already exists leading to clone failing
     subprocess.run(["rm", "-rf", repo_name])
-
-    from github import Github
-    import subprocess
 
     # Replace with your GitHub token and organization name
     token = os.getenv("Token_GitHub")
