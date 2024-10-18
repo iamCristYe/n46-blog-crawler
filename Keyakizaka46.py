@@ -127,7 +127,7 @@ def get_articles_url_list(member_id: int, previous_blog_url_list: list):
             current_page += 1
 
             # when testing, uncomment below line to only get page 1
-            break
+            # break
             time.sleep(random.randint(1, 3))
         else:
             break
@@ -140,9 +140,11 @@ def get_blog_content(url: str, repo_name: str):
         try:
             data = {}
             soup = BeautifulSoup(requests.get(url).content, "lxml")
-            data["title"] = soup.find_all("h3")[0].get_text()
+            data["title"] = soup.find_all("h3")[0].get_text().strip()
 
-            data["time"] = soup.find_all("div", class_="box-bottom")[0].get_text()
+            data["time"] = (
+                soup.find_all("div", class_="box-bottom")[0].get_text().strip()
+            )
 
             data["url"] = url
 
@@ -177,18 +179,18 @@ def update_repo(member_id: int):
     token = os.getenv("TOKEN_GITHUB")
     organization_name = "SakamichiSeries"
 
-    # g = Github(token)
-    # org = g.get_organization(organization_name)
-    # try:
-    #     repo = org.get_repo(repo_name)
-    #     print(f"Repository '{repo_name}' already exists.")
-    # except:
-    #     # Create a new repository
-    #     repo = org.create_repo(name=repo_name)
-    #     print(f"Creating repository '{repo_name}'.")
-    # # clone_url = repo.clone_url
-    # clone_url = f"https://{token}@github.com/SakamichiSeries/{repo_name}.git"
-    # subprocess.run(["git", "clone", clone_url])
+    g = Github(token)
+    org = g.get_organization(organization_name)
+    try:
+        repo = org.get_repo(repo_name)
+        print(f"Repository '{repo_name}' already exists.")
+    except:
+        # Create a new repository
+        repo = org.create_repo(name=repo_name)
+        print(f"Creating repository '{repo_name}'.")
+    # clone_url = repo.clone_url
+    clone_url = f"https://{token}@github.com/SakamichiSeries/{repo_name}.git"
+    subprocess.run(["git", "clone", clone_url])
     result = get_profile(member_id)
 
     previous_blog_url_list = []
