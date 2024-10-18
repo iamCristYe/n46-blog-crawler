@@ -312,15 +312,18 @@ def update_repo(member_id: int):
     # Add all changes
     subprocess.run(["git", "add", "-A"], check=True, cwd=repo_name)
 
-    # Commit the changes
-    subprocess.run(
-        ["git", "commit", "-m", "Automated commit by GitHub Action"],
-        check=True,
-        cwd=repo_name,
-    )
+    try:
+        # Commit the changes
+        subprocess.run(
+            ["git", "commit", "-m", "Automated commit by GitHub Action"],
+            check=True,
+            cwd=repo_name,
+        )
 
-    # Push the changes
-    subprocess.run(["git", "push"], check=True, cwd=repo_name)
+        # Push the changes
+        subprocess.run(["git", "push"], check=True, cwd=repo_name)
+    except:
+        pass
 
 
 member_code = [
