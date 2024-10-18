@@ -245,14 +245,17 @@ def update_repo(member_id: int):
     # fix https://www.nogizaka46.com/s/n46/diary/detail/56176
 
     result = get_profile(member_id)
+    repo_name = result["repo_name"]
+    # Fix profile_pic already exists leading to clone failing
+    subprocess.run(["rm", "-rf", repo_name])
 
     from github import Github
     import subprocess
 
     # Replace with your GitHub token and organization name
     token = os.getenv("Token_GitHub")
-    organization_name = "Sakamichi"
-    repo_name = result["repo_name"]
+    organization_name = "SakamichiSeries"
+
     g = Github(token)
     org = g.get_organization(organization_name)
     try:
@@ -265,6 +268,7 @@ def update_repo(member_id: int):
     # clone_url = repo.clone_url
     clone_url = f"https://{token}@github.com/SakamichiSeries/{repo_name}.git"
     subprocess.run(["git", "clone", clone_url])
+    result = get_profile(member_id)
 
     previous_blog_url_list = []
     if os.path.exists(repo_name + "/result.json"):
