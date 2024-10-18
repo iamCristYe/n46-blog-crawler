@@ -81,9 +81,9 @@ def get_profile(member_id: str):
     profile_url = f"https://www.hinatazaka46.com/s/official/artist/{member_id}"
     soup = BeautifulSoup(requests.get(profile_url).content, "lxml")
 
-    result["member_name_kana"] = soup.find_all("div", class_="c-member__kana")[
-        0
-    ].get_text()
+    result["member_name_kana"] = (
+        soup.find_all("div", class_="c-member__kana")[0].get_text().strip()
+    )
 
     temp_en = soup.find_all("span", class_="name_en")[0].get_text()
     result["member_name_kanji"] = (
