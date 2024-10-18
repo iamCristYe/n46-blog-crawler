@@ -34,8 +34,8 @@ member_codes = [
     # ["51", "山﨑 天"],
     # ["53", "遠藤 光莉"],
     # ["54", "大園 玲"],
-    # ["55", "大沼 晶保"],
-    ["56", "幸阪 茉里乃"],
+    ["55", "大沼 晶保"],
+    # ["56", "幸阪 茉里乃"],
     # ["57", "増本 綺良"],
     # ["58", "守屋 麗奈"],
 ]
@@ -249,4 +249,6 @@ def update_repo(member_id: int):
 
 
 for code in member_codes:
-    update_repo(code[0])
+    update_repo(code)
+    subprocess.run(["date"])
+    subprocess.run(["du", "-hd1"])
