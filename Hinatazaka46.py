@@ -114,8 +114,9 @@ def get_profile(member_id: str):
         result[key] = info_table.find_all("td")[i * 2 + 1].get_text().strip()
 
     result["SNS"] = {}
-    if soup.find_all("td", class_="c-member__info-td__text"):
-        for a in soup.find_all("td", class_="c-member__info-td__text")[0].children:
+    temp_td__text_list = soup.find_all("td", class_="c-member__info-td__text")
+    if len(temp_td__text_list) > 5:
+        for a in temp_td__text_list[5].children:
             if "instagram" in a.get("href"):
                 result["SNS"]["Instagram"] = a.get("href")
             raise Exception
