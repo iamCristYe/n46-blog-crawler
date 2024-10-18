@@ -363,6 +363,8 @@ member_code = [
 
 for code in member_code:
     update_repo(code)
+    subprocess.run(["date"])
+    subprocess.run(["du", "-hd1"])
 
 # with open("Nogizaka46-member.json") as codes_json:
 #     codes = json.load(codes_json)
