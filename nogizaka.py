@@ -219,17 +219,19 @@ def get_blog_content(url: str, repo_name: str):
                 if img.get("src"):
                     # Check if the parent is an <a> tag
                     parent = img.find_parent("a")
-                    # fix for staff blogs. example: https://www.nogizaka46.com/s/n46/diary/detail/22046
-                    if parent and parent.get("href"):
-                        # Replace img src with href of the parent <a>
-                        img["src"] = download_image_return_path(
-                            parent.get("href"), repo_name
-                        )
-                    else:
-                        # If no parent <a> or no href, process the img normally
-                        img["src"] = download_image_return_path(
-                            img.get("src"), repo_name
-                        )
+                    img["src"] = download_image_return_path(img.get("src"), repo_name)
+
+                    # # fix for staff blogs. example: https://www.nogizaka46.com/s/n46/diary/detail/22046
+                    # if parent and parent.get("href"):
+                    #     # Replace img src with href of the parent <a>
+                    #     img["src"] = download_image_return_path(
+                    #         parent.get("href"), repo_name
+                    #     )
+                    # else:
+                    #     # If no parent <a> or no href, process the img normally
+                    #     img["src"] = download_image_return_path(
+                    #         img.get("src"), repo_name
+                    #     )
 
             data["content"] = str(content)
 
@@ -296,7 +298,7 @@ def update_repo(member_id: int):
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     subprocess.run(["pwd"])
-    subprocess.run(["cd", repo_name])
+    os.chdir(repo_name)
     subprocess.run(["pwd"])
     subprocess.run(["cp", "../.nojekyll", "."])
     subprocess.run(
