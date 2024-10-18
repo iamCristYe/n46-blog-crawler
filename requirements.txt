@@ -2,3 +2,4 @@ bs4
 python-dotenv
 lxml
 requests
+PyGithub
