@@ -249,6 +249,6 @@ def update_repo(member_id: int):
 
 
 for code in member_codes:
-    update_repo(code)
+    update_repo(code[0])
     subprocess.run(["date"])
     subprocess.run(["du", "-hd1"])
