@@ -102,10 +102,10 @@ def get_profile(member_id: str):
 
 def get_articles_url_list(member_id: int, previous_blog_url_list: list):
     current_page = 0
-    current_url = f"https://www.keyakizaka46.com/s/k46o/diary/member/list?page={current_page}&ct={member_id}"
     articles_url_list = []
 
     while True:
+        current_url = f"https://www.keyakizaka46.com/s/k46o/diary/member/list?page={current_page}&ct={member_id}"
         soup = BeautifulSoup(requests.get(current_url).content, "lxml")
         # print(soup.prettify())
         a_list = soup.find_all("a", string="個別ページ")
