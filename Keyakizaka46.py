@@ -252,7 +252,7 @@ def update_repo(member_id: int):
         "Authorization": f"Bearer {token}",
         "X-GitHub-Api-Version": "2022-11-28",
     }
-    data = {"source": {"branch": "main", "path": "/docs"}}
+    data = {"source": {"branch": "main", "path": "/"}}
 
     response = requests.post(url, headers=headers, json=data)
 
