@@ -199,8 +199,10 @@ def update_repo(member_id: int):
 
     # clean repo to crawl again
     subprocess.run(["git", "clone", clone_url])
-    subprocess.run(["shopt", "-s", "extglob"])
-    subprocess.run(["rm", "-rf", repo_name + "/!(.git)"])
+
+    subprocess.run(["rm", "-rf", repo_name + "/files"])
+    subprocess.run(["rm", "-rf", repo_name + "/images"])
+    subprocess.run(["rm", "-rf", repo_name + "/result.json"])
 
     if os.path.exists(repo_name + "/result.json"):
         with open(repo_name + "/result.json") as previous_json:
