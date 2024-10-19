@@ -228,7 +228,7 @@ def update_repo(member_id: int):
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     subprocess.run(["cp", "../.nojekyll", "."], cwd=repo_name)
-    os.makedirs(".github/workflows", exist_ok=True)
+    os.makedirs(f"{repo_name}/.github/workflows", exist_ok=True)
     subprocess.run(
         ["cp", "../static.yml", ".github/workflows/static.yml"], cwd=repo_name
     )
