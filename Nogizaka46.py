@@ -268,7 +268,9 @@ def update_repo(member_id: int):
         print(f"Creating repository '{repo_name}'.")
     # clone_url = repo.clone_url
     clone_url = f"https://{token}@github.com/SakamichiSeries/{repo_name}.git"
+    subprocess.run(["date"])
     subprocess.run(["git", "clone", clone_url])
+    subprocess.run(["date"])
     result = get_profile(member_id)
 
     previous_blog_url_list = []
@@ -325,6 +327,10 @@ def update_repo(member_id: int):
     except:
         pass
 
+    subprocess.run(["date"])
+    subprocess.run(["du", "-hd1"])
+    subprocess.run(["rm", "-rf", repo_name])
+
 
 member_code = [
     36749,  # 伊藤 理々杏
@@ -363,8 +369,6 @@ member_code = [
 
 for code in member_code:
     update_repo(code)
-    subprocess.run(["date"])
-    subprocess.run(["du", "-hd1"])
 
 # with open("Nogizaka46-member.json") as codes_json:
 #     codes = json.load(codes_json)
