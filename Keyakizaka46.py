@@ -34,7 +34,7 @@ member_codes = [
     # ["51", "山﨑 天"],
     # ["53", "遠藤 光莉"],
     # ["54", "大園 玲"],
-    # ["55", "大沼 晶保"],
+    ["55", "大沼 晶保"],
     ["56", "幸阪 茉里乃"],
     ["57", "増本 綺良"],
     ["58", "守屋 麗奈"],
@@ -228,10 +228,6 @@ def update_repo(member_id: int):
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     subprocess.run(["cp", "../.nojekyll", "."], cwd=repo_name)
-    os.makedirs(f"{repo_name}/.github/workflows", exist_ok=True)
-    subprocess.run(
-        ["cp", "../static.yml", ".github/workflows/static.yml"], cwd=repo_name
-    )
     subprocess.run(
         ["git", "config", "--local", "user.name", "GitHub Action"],
         check=True,
