@@ -198,6 +198,7 @@ def update_repo(member_id: int):
     previous_blog_url_list = []
 
     # clean repo to crawl again
+    subprocess.run(["rm", "-rf", repo_name + "/.github"])
     subprocess.run(["rm", "-rf", repo_name + "/files"])
     subprocess.run(["rm", "-rf", repo_name + "/images"])
     subprocess.run(["rm", "-rf", repo_name + "/result.json"])
