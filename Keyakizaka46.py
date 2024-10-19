@@ -229,7 +229,9 @@ def update_repo(member_id: int):
 
     subprocess.run(["cp", "../.nojekyll", "."], cwd=repo_name)
     os.makedirs(".github/workflows", exist_ok=True)
-    subprocess.run(["cp", "../static.yml", ".github/workflows"], cwd=repo_name)
+    subprocess.run(
+        ["cp", "../static.yml", ".github/workflows/static.yml"], cwd=repo_name
+    )
     subprocess.run(
         ["git", "config", "--local", "user.name", "GitHub Action"],
         check=True,
