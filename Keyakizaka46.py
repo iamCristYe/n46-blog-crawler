@@ -12,31 +12,31 @@ import subprocess
 # https://www.crummy.com/software/BeautifulSoup/bs4/doc/#the-keyword-arguments:~:text=External%20Python%20dependency-,If%20you%20can%2C%20I%20recommend%20you%20install%20and%20use%20lxml%20for%20speed.,-Note%20that%20if
 
 member_codes = [
-    ["03", "上村 莉菜"],
-    ["04", "尾関 梨香"],
-    ["06", "小池 美波"],
-    ["07", "小林 由依"],
-    ["08", "齋藤 冬優花"],
-    ["11", "菅井 友香"],
-    ["14", "土生 瑞穂"],
-    ["15", "原田 葵"],
-    ["18", "守屋 茜"],
-    ["20", "渡辺 梨加"],
-    ["21", "渡邉 理佐"],
-    ["43", "井上 梨名"],
-    ["44", "関 有美子"],
-    ["45", "武元 唯衣"],
-    ["46", "田村 保乃"],
-    ["47", "藤吉 夏鈴"],
-    ["48", "松田 里奈"],
-    ["49", "松平 璃子"],
-    ["50", "森田 ひかる"],
-    ["51", "山﨑 天"],
-    ["53", "遠藤 光莉"],
-    ["54", "大園 玲"],
-    ["55", "大沼 晶保"],
-    ["56", "幸阪 茉里乃"],
-    ["57", "増本 綺良"],
+    # ["03", "上村 莉菜"],
+    # ["04", "尾関 梨香"],
+    # ["06", "小池 美波"],
+    # ["07", "小林 由依"],
+    # ["08", "齋藤 冬優花"],
+    # ["11", "菅井 友香"],
+    # ["14", "土生 瑞穂"],
+    # ["15", "原田 葵"],
+    # ["18", "守屋 茜"],
+    # ["20", "渡辺 梨加"],
+    # ["21", "渡邉 理佐"],
+    # ["43", "井上 梨名"],
+    # ["44", "関 有美子"],
+    # ["45", "武元 唯衣"],
+    # ["46", "田村 保乃"],
+    # ["47", "藤吉 夏鈴"],
+    # ["48", "松田 里奈"],
+    # ["49", "松平 璃子"],
+    # ["50", "森田 ひかる"],
+    # ["51", "山﨑 天"],
+    # ["53", "遠藤 光莉"],
+    # ["54", "大園 玲"],
+    # ["55", "大沼 晶保"],
+    # ["56", "幸阪 茉里乃"],
+    # ["57", "増本 綺良"],
     ["58", "守屋 麗奈"],
 ]
 
@@ -196,6 +196,12 @@ def update_repo(member_id: int):
     result = get_profile(member_id)
 
     previous_blog_url_list = []
+
+    # clean repo to crawl again
+    subprocess.run(["git", "clone", clone_url])
+    subprocess.run(["shopt", "-s", "extglob"])
+    subprocess.run(["rm", "-rf", repo_name + "/!(.git)"])
+
     if os.path.exists(repo_name + "/result.json"):
         with open(repo_name + "/result.json") as previous_json:
             previous_result = json.load(previous_json)
@@ -222,6 +228,8 @@ def update_repo(member_id: int):
         json.dump(result, f, ensure_ascii=False, indent=2)
 
     subprocess.run(["cp", "../.nojekyll", "."], cwd=repo_name)
+    os.makedirs(".github/workflows", exist_ok=True)
+    subprocess.run(["cp", "../static.yml", ".github/workflows"], cwd=repo_name)
     subprocess.run(
         ["git", "config", "--local", "user.name", "GitHub Action"],
         check=True,
