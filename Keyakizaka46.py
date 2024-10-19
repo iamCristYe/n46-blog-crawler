@@ -35,8 +35,8 @@ member_codes = [
     # ["53", "遠藤 光莉"],
     # ["54", "大園 玲"],
     # ["55", "大沼 晶保"],
-    # ["56", "幸阪 茉里乃"],
-    # ["57", "増本 綺良"],
+    ["56", "幸阪 茉里乃"],
+    ["57", "増本 綺良"],
     ["58", "守屋 麗奈"],
 ]
 
@@ -245,6 +245,16 @@ def update_repo(member_id: int):
 
     # Add all changes
     subprocess.run(["git", "add", "-A"], check=True, cwd=repo_name)
+
+    url = f"https://api.github.com/repos/SakamichiSeries/{repo_name}/pages"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    data = {"source": {"branch": "main", "path": "/docs"}}
+
+    response = requests.post(url, headers=headers, json=data)
 
     try:
         # Commit the changes
