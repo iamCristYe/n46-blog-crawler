@@ -59,9 +59,6 @@ def get_blog_content(url: str, repo_name: str, group: str):
         raise Exception
 
 
-du_results = ""
-
-
 def scrape_repo(member_id: str, group: str):
     # fix https://www.nogizaka46.com/s/n46/diary/detail/56176
     sys.setrecursionlimit(4646)
@@ -111,7 +108,7 @@ def scrape_repo(member_id: str, group: str):
             previous_result = json.load(previous_json)
             for blog_entry in previous_result["blog"]:
                 previous_blog_url_list.append(blog_entry["url"])
-                print("Previous blog url: " + blog_entry["url"])
+                # print("Previous blog url: " + blog_entry["url"])
     blogs_url_list = get_blog_url_list(member_id, previous_blog_url_list, group)
     result["blog"] = []
 
@@ -268,7 +265,7 @@ code_Hinatazaka46 = [
     "36",  # "渡辺 莉奈"],
 ]
 
-
+du_results = ""
 for member in code_Nogizaka46:
     scrape_repo(member, "N")
 for member in code_Sakurazaka46:
