@@ -169,9 +169,9 @@ def get_blog_content(url: str, repo_name: str):
                 soup.find_all("h1", class_="bd--hd__ttl f--head a--tx js-tdi")[0]
                 .get_text()
                 .strip()
-                if soup.find_all("h1", class_="bd--hd__ttl f--head a--tx js-tdi")
-                else "(無題)"
             )
+            if data["title"] == "":
+                data["title"] = "(無題)"
 
             data["time"] = (
                 soup.find_all("p", class_="bd--hd__date a--tx js-tdi")[0]

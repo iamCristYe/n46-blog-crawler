@@ -122,7 +122,10 @@ def scrape_repo(member_id: str, group: str, du_results: list):
     if os.path.exists(repo_name + "/result.json"):
         with open(repo_name + "/result.json") as previous_json:
             for blog_entry in previous_result["blog"]:
-                result["blog"].append(blog_entry)
+                tmp = blog_entry
+                if tmp["title"] == "":
+                    tmp["title"] = "(無題)"
+                result["blog"].append(tmp)
 
     with open(f"{result['repo_name']}/result.json", "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
@@ -263,6 +266,7 @@ code_Hinatazaka46 = [
     "34",  # "宮地 すみれ"],
     "35",  # "山下 葉留花"],
     "36",  # "渡辺 莉奈"],
+    "000",  # ポカ
 ]
 
 du_results = []

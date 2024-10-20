@@ -8,6 +8,19 @@ from utils import add_host, download_image_return_path
 
 
 def get_profile(member_id: str):
+    if str(member_id).startswith("000"):
+        return {
+            "member_name_kanji": "ポカ",
+            "member_name_kana": "ポカ",
+            "member_name_romaji": "poka",
+            "repo_name": "poka-blog-archive",
+            "SNS": {},
+            "生年月日": "",
+            "血液型": "",
+            "星座": "",
+            "身長": "",
+            "profile_pic": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hinatazaka46_logomark_2021.svg/386px-Hinatazaka46_logomark_2021.svg.png",
+        }
     result = {}
 
     profile_url = f"https://www.hinatazaka46.com/s/official/artist/{member_id}"
@@ -109,9 +122,9 @@ def get_blog_content(url: str, repo_name: str):
                 soup.find_all("div", class_="c-blog-article__title")[0]
                 .get_text()
                 .strip()
-                if soup.find_all("div", class_="c-blog-article__title")
-                else "(無題)"
             )
+            if data["title"] == "":
+                data["title"] = "(無題)"
 
             data["time"] = (
                 soup.find_all("div", class_="c-blog-article__date")[0]

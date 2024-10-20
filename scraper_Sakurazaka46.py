@@ -93,9 +93,10 @@ def get_blog_content(url: str, repo_name: str):
             # https://sakurazaka46.com/s/s46/diary/detail/57724
             data["title"] = (
                 soup.find_all("div", class_="inner title-wrap")[0].get_text().strip()
-                if soup.find_all("div", class_="inner title-wrap")
-                else "(無題)"
             )
+
+            if data["title"] == "":
+                data["title"] = "(無題)"
 
             data["time"] = (
                 soup.find_all("article")[0]
