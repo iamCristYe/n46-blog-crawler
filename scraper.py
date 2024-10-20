@@ -59,7 +59,7 @@ def get_blog_content(url: str, repo_name: str, group: str):
         raise Exception
 
 
-def scrape_repo(member_id: str, group: str):
+def scrape_repo(member_id: str, group: str, du_results: list):
     # fix https://www.nogizaka46.com/s/n46/diary/detail/56176
     sys.setrecursionlimit(4646)
 
@@ -168,7 +168,7 @@ def scrape_repo(member_id: str, group: str):
 
         subprocess.run(["date"])
         du_result = subprocess.run(["du", "-hd1", repo_name], capture_output=True)
-        du_results += du_result.stdout.decode("unicode_escape")
+        du_results.append(du_result.stdout.decode("unicode_escape"))
         subprocess.run(["rm", "-rf", repo_name])
 
 
@@ -265,11 +265,11 @@ code_Hinatazaka46 = [
     "36",  # "渡辺 莉奈"],
 ]
 
-du_results = ""
+du_results = []
 for member in code_Nogizaka46:
-    scrape_repo(member, "N")
+    scrape_repo(member, "N", du_results)
 for member in code_Sakurazaka46:
-    scrape_repo(member, "S")
+    scrape_repo(member, "S", du_results)
 for member in code_Hinatazaka46:
-    scrape_repo(member, "H")
+    scrape_repo(member, "H", du_results)
 print(du_results)
