@@ -170,7 +170,7 @@ def scrape_repo(member_id: str, group: str, du_results: list):
             pass
 
         subprocess.run(["date"])
-        du_result = subprocess.run(["du", "-hd0", repo_name], capture_output=True)
+        du_result = subprocess.run(["du", "-sm", repo_name], capture_output=True)
         du_results.append(du_result.stdout.decode("unicode_escape"))
         subprocess.run(["rm", "-rf", repo_name])
 
