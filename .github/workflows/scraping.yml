@@ -1,9 +1,8 @@
 name: scraper
 
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron: '20 20 * * *'
   workflow_dispatch:
 
 jobs:
