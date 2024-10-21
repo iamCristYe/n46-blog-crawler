@@ -170,7 +170,7 @@ def scrape_repo(member_id: str, group: str, du_results: list):
             pass
 
         subprocess.run(["date"])
-        du_result = subprocess.run(["du", "-hd1", repo_name], capture_output=True)
+        du_result = subprocess.run(["du", "-hd0", repo_name], capture_output=True)
         du_results.append(du_result.stdout.decode("unicode_escape"))
         subprocess.run(["rm", "-rf", repo_name])
 
@@ -277,3 +277,4 @@ for member in code_Sakurazaka46:
 for member in code_Hinatazaka46:
     scrape_repo(member, "H", du_results)
 print(du_results)
+print("".join(du_results))

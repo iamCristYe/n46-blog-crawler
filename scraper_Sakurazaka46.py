@@ -29,10 +29,13 @@ def get_profile(member_id: str):
         result[key] = dltb.find_all("dd")[i].get_text()
 
     result["SNS"] = {}
-    if soup.find_all("dd", class_="prof-elem-sns dltb"):
-        for a in soup.find_all("dd", class_="prof-elem-sns dltb")[0].children:
+    if soup.find_all("dl", class_="prof-elem-sns"):
+        for a in soup.find_all("dl", class_="prof-elem-sns")[0].find_all("a"):
             # a.parent.get("class") insta
-            result["SNS"][a.parent.get("class")] = a.get("href")
+            if a.parent.get("class")[0] == "insta":
+                result["SNS"]["Instagram"] = a.get("href")
+            else:
+                raise Exception
 
     print(result)
     result["profile_pic"] = download_image_return_path(
